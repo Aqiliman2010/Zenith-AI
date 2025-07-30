@@ -7,7 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_ENDPOINT = 'https://api.aimlapi.com/v1/chat/completions'; 
 
     // Simpan pesan dalam sesi tunggal
-    let currentSessionMessages = []; 
+    // **PERBAIKAN: Hapus role: 'system' dan tambahkan instruksi sebagai user message pertama**
+    // Ini akan menjadi konteks awal yang tidak ditampilkan ke pengguna secara langsung.
+    let currentSessionMessages = [
+        { role: 'user', content: 'Sila jawab semua soalan dalam Bahasa Melayu sahaja. Jangan gunakan bahasa lain.' }
+    ]; 
+    // Tambahan: Tambahkan respons dari AI untuk instruksi awal ini agar konteks seimbang
+    // Ini membantu AI memahami bahwa instruksi sudah "diterima"
+    currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan menjawab dalam Bahasa Melayu sahaja.' });
+
 
     // Fungsi untuk menambahkan pesan ke antarmuka chat
     function addMessage(text, sender) {
@@ -24,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sender === 'ai') {
             const copyBtn = document.createElement('button');
             copyBtn.classList.add('copy-btn');
-            copyBtn.innerHTML = '<i class="far fa-copy"></i>'; // Ikon copy
+            copyBtn.innerHTML = '<i class="far fa-copy"></i>'; // Ikon copy Font Awesome
             copyBtn.title = 'Salin Pesan';
             copyBtn.addEventListener('click', () => {
                 navigator.clipboard.writeText(p.textContent)
@@ -36,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                     .catch(err => {
                         console.error('Gagal menyalin teks: ', err);
-                        alert('Gagal menyalin teks. Silakan salin manual.');
+                        alert('Gagal menyalin teks. Sila salin manual.');
                     });
             });
             messageDiv.appendChild(copyBtn);
