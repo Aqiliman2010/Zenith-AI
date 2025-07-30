@@ -1,3 +1,8 @@
+:root {
+    /* Definisikan ukuran font dasar untuk kemudahan penskalaan */
+    font-size: 16px; /* Font dasar untuk desktop, akan disesuaikan di mobile */
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     display: flex;
@@ -5,7 +10,7 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    padding: 20px;
+    padding: 1.25rem; /* Menggunakan rem untuk padding body (20px) */
     box-sizing: border-box;
     overflow: hidden;
 
@@ -13,64 +18,64 @@ body {
     background: #e0e0e0;
     background-image: radial-gradient(#d0d0d0 1px, transparent 1px),
                       radial-gradient(#d0d0d0 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-position: 0 0, 20px 20px;
+    background-size: 2.5rem 2.5rem; /* Menggunakan rem (40px) */
+    background-position: 0 0, 1.25rem 1.25rem; /* Menggunakan rem (20px) */
 }
 
 .chat-container {
     background-color: #ffffff;
-    border-radius: 12px; /* Radius untuk seluruh container */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 0.75rem; /* Menggunakan rem (12px) */
+    box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.2); /* Menggunakan rem (10px 30px) */
     width: 95%;
-    max-width: 800px;
+    max-width: 50rem; /* Menggunakan rem (800px) */
     height: 90vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Penting untuk menjaga border-radius di dalam */
+    overflow: hidden;
     position: relative;
 }
 
 .chat-header {
     background-color: #333333;
     color: white;
-    padding: 18px 25px;
+    padding: 1.125rem 1.5625rem; /* Menggunakan rem (18px 25px) */
     text-align: center;
-    font-size: 1.2em;
-    border-radius: 0; /* TIDAK ADA LENGKUNGAN DI HEADER ATAS */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 1.2em; /* Em relatif terhadap font-size parent */
+    border-radius: 0;
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1); /* Menggunakan rem (2px 5px) */
     flex-shrink: 0;
 }
 
 .chat-header h1 {
     margin: 0;
-    font-size: 1.5em;
+    font-size: 1.5em; /* Em relatif terhadap font-size parent */
     font-weight: 500;
 }
 
 .chat-messages {
     flex-grow: 1;
-    padding: 20px 25px;
+    padding: 1.25rem 1.5625rem; /* Menggunakan rem (20px 25px) */
     overflow-y: auto;
     background-color: #f7f7f7;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 0.9375rem; /* Menggunakan rem (15px) */
     line-height: 1.6;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 20px;
+    padding-bottom: 1.25rem; /* Menggunakan rem (20px) */
 }
 
 /* Scrollbar styling (Webkit) */
 .chat-messages::-webkit-scrollbar {
-    width: 8px;
+    width: 0.5rem; /* Menggunakan rem (8px) */
 }
 .chat-messages::-webkit-scrollbar-track {
     background: #e9e9e9;
-    border-radius: 10px;
+    border-radius: 0.625rem; /* Menggunakan rem (10px) */
 }
 .chat-messages::-webkit-scrollbar-thumb {
     background: #b0b0b0;
-    border-radius: 10px;
+    border-radius: 0.625rem; /* Menggunakan rem (10px) */
 }
 .chat-messages::-webkit-scrollbar-thumb:hover {
     background: #888888;
@@ -78,10 +83,10 @@ body {
 
 .message {
     max-width: 85%;
-    padding: 14px 20px;
-    border-radius: 25px;
+    padding: 0.875rem 1.25rem; /* Menggunakan rem (14px 20px) */
+    border-radius: 1.5625rem; /* Menggunakan rem (25px) */
     word-wrap: break-word;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.08); /* Menggunakan rem (2px 8px) */
     position: relative;
     transition: transform 0.2s ease-out;
     transform-origin: bottom;
@@ -90,7 +95,7 @@ body {
 /* Animasi pesan masuk */
 .message.fade-in {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(1.25rem); /* Menggunakan rem (20px) */
     animation: fadeInMessage 0.3s ease-out forwards;
 }
 
@@ -105,26 +110,26 @@ body {
     background-color: #e8e8e8;
     color: #333;
     align-self: flex-end;
-    border-bottom-right-radius: 8px;
+    border-bottom-right-radius: 0.5rem; /* Menggunakan rem (8px) */
 }
 
 .ai-message {
     background-color: #f0f0f0;
     color: #333;
     align-self: flex-start;
-    border-bottom-left-radius: 8px;
+    border-bottom-left-radius: 0.5rem; /* Menggunakan rem (8px) */
 }
 
 /* Style untuk tombol copy */
 .copy-btn {
     position: absolute;
-    top: 5px;
-    right: 10px;
+    top: 0.3125rem; /* Menggunakan rem (5px) */
+    right: 0.625rem; /* Menggunakan rem (10px) */
     background: none;
     border: none;
     color: #888;
     cursor: pointer;
-    font-size: 0.8em;
+    font-size: 0.8em; /* Em relatif terhadap font-size parent */
     opacity: 0;
     transition: opacity 0.2s ease;
 }
@@ -139,12 +144,12 @@ body {
 
 .chat-input-area {
     display: flex;
-    padding: 15px 25px;
+    padding: 0.9375rem 1.5625rem; /* Menggunakan rem (15px 25px) */
     background-color: #ffffff;
     border-top: 1px solid #e0e0e0;
     align-items: flex-end;
-    gap: 12px;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    gap: 0.75rem; /* Menggunakan rem (12px) */
+    box-shadow: 0 -0.125rem 0.625rem rgba(0, 0, 0, 0.05); /* Menggunakan rem (2px 10px) */
     position: static;
     bottom: auto;
     left: auto;
@@ -152,28 +157,28 @@ body {
     box-sizing: border-box;
     z-index: auto;
     /* LENGKUNGAN DI DUA SUDUT BAWAH */
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 0.75rem; /* Menggunakan rem (12px) */
+    border-bottom-right-radius: 0.75rem; /* Menggunakan rem (12px) */
 }
 
 textarea#userInput {
     flex-grow: 1;
-    padding: 12px 18px;
+    padding: 0.75rem 1.125rem; /* Menggunakan rem (12px 18px) */
     border: 1px solid #c0c0c0;
-    border-radius: 28px;
-    font-size: 1.05em;
+    border-radius: 1.75rem; /* Menggunakan rem (28px) */
+    font-size: 1.05em; /* Em relatif terhadap font-size parent */
     resize: none;
-    min-height: 48px;
-    max-height: 150px;
+    min-height: 3rem; /* Menggunakan rem (48px) */
+    max-height: 9.375rem; /* Menggunakan rem (150px) */
     overflow-y: auto;
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.06);
+    box-shadow: inset 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.06); /* Menggunakan rem (1px 4px) */
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 textarea#userInput:focus {
     outline: none;
     border-color: #888888;
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.08), 0 0 0 3px rgba(136, 136, 136, 0.2);
+    box-shadow: inset 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.08), 0 0 0 0.1875rem rgba(136, 136, 136, 0.2); /* Menggunakan rem (1px 4px, 3px) */
 }
 
 button#submitBtn {
@@ -181,31 +186,31 @@ button#submitBtn {
     color: white;
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 3.125rem; /* Menggunakan rem (50px) */
+    height: 3.125rem; /* Menggunakan rem (50px) */
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.2s ease;
     flex-shrink: 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.15); /* Menggunakan rem (4px 10px) */
 }
 
 button#submitBtn:hover {
     background-color: #333333;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-0.125rem); /* Menggunakan rem (2px) */
+    box-shadow: 0 0.375rem 0.9375rem rgba(0, 0, 0, 0.2); /* Menggunakan rem (6px 15px) */
 }
 
 button#submitBtn:active {
     transform: translateY(0px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1); /* Menggunakan rem (2px 5px) */
 }
 
 button#submitBtn svg {
-    width: 22px;
-    height: 22px;
+    width: 1.375rem; /* Menggunakan rem (22px) */
+    height: 1.375rem; /* Menggunakan rem (22px) */
 }
 
 /* Loading dots animation */
@@ -214,19 +219,19 @@ button#submitBtn svg {
     align-items: center;
     justify-content: center;
     background-color: #f0f0f0;
-    padding: 14px 20px;
-    border-radius: 25px;
+    padding: 0.875rem 1.25rem; /* Menggunakan rem (14px 20px) */
+    border-radius: 1.5625rem; /* Menggunakan rem (25px) */
     width: fit-content;
     align-self: flex-start;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.08); /* Menggunakan rem (2px 8px) */
 }
 
 .loading-dots span {
-    width: 8px;
-    height: 8px;
+    width: 0.5rem; /* Menggunakan rem (8px) */
+    height: 0.5rem; /* Menggunakan rem (8px) */
     background-color: #888;
     border-radius: 50%;
-    margin: 0 4px;
+    margin: 0 0.25rem; /* Menggunakan rem (4px) */
     animation: bounce 1.4s infinite ease-in-out both;
 }
 
@@ -239,39 +244,60 @@ button#submitBtn svg {
     40% { transform: scale(1); }
 }
 
-/* Mobile-specific adjustments */
+/* Media Queries untuk Mobile (Breakpoint Utama) */
 @media (max-width: 768px) {
+    :root {
+        /* Kurangkan ukuran font dasar untuk perangkat mobile */
+        font-size: 14px; /* Default 16px, di sini jadi 14px */
+    }
+
     body {
-        padding: 0;
+        padding: 0; /* Hapus padding body pada mobile untuk lebih banyak ruang */
     }
     .chat-container {
-        border-radius: 0;
-        box-shadow: none;
+        border-radius: 0; /* Hapus border-radius pada mobile untuk fullscreen */
+        box-shadow: none; /* Hapus shadow pada mobile */
         width: 100vw;
         height: 100vh;
     }
     .chat-header {
-        padding: 15px 20px;
-        border-radius: 0; /* Pastikan tidak ada radius di mobile fullscreen */
+        padding: 0.9375rem 1.25rem; /* Menggunakan rem (15px 20px) */
+        border-radius: 0;
     }
     .chat-messages {
-        padding: 15px 20px;
-        padding-bottom: 15px;
+        padding: 0.9375rem 1.25rem; /* Menggunakan rem (15px 20px) */
+        padding-bottom: 0.9375rem; /* Menggunakan rem (15px) */
     }
     .chat-input-area {
-        padding: 10px 15px;
-        border-radius: 0; /* Pastikan tidak ada radius di mobile fullscreen */
+        padding: 0.625rem 0.9375rem; /* Menggunakan rem (10px 15px) */
+        border-radius: 0; /* Hapus border-radius pada mobile */
     }
     textarea#userInput {
-        min-height: 40px;
-        font-size: 1em;
+        min-height: 2.5rem; /* Menggunakan rem (40px) */
+        font-size: 1em; /* Tetap 1em, akan mengikuti :root (14px) */
     }
     button#submitBtn {
-        width: 45px;
-        height: 45px;
+        width: 2.8125rem; /* Menggunakan rem (45px) */
+        height: 2.8125rem; /* Menggunakan rem (45px) */
     }
     button#submitBtn svg {
-        width: 20px;
-        height: 20px;
+        width: 1.25rem; /* Menggunakan rem (20px) */
+        height: 1.25rem; /* Menggunakan rem (20px) */
     }
 }
+
+/* Anda juga bisa menambahkan media queries untuk DPI tinggi jika perlu,
+   walaupun `rem` dan `em` sudah cukup efektif */
+/* Contoh untuk Retina Displays (sekadar contoh, mungkin tidak selalu perlu jika rem/em digunakan secara konsisten) */
+/* @media only screen and (-webkit-min-device-pixel-ratio: 2),
+       only screen and (min--moz-device-pixel-ratio: 2),
+       only screen and (-o-min-device-pixel-ratio: 2/1),
+       only screen and (min-device-pixel-ratio: 2),
+       only screen and (min-resolution: 192dpi),
+       only screen and (min-resolution: 2dppx) {
+    
+    // Gaya khusus untuk tampilan resolusi tinggi, contohnya:
+    // H1 { font-weight: 700; }
+    // Untuk memastikan elemen grafik vector (SVG) akan autoscaled dengan betul
+    // dan gambar rastar perlu disediakan dalam resolusi lebih tinggi (srcset)
+} */
