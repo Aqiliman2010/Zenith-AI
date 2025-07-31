@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Authorization': `Bearer ${API_KEY}` 
                 },
                 body: JSON.stringify({
-                    "model": "google/gemma-3-27b-it", 
+                    "model": "google/gemma-3-4b-it", 
                     "messages": currentSessionMessages
                 })
             });
