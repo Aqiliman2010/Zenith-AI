@@ -6,14 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_KEY = '9e505e555ed44612a7cc12097403c75d'; 
     const API_ENDPOINT = 'https://api.aimlapi.com/v1/chat/completions'; 
 
-    // Simpan pesan dalam sesi tunggal
-    // **PERBAIKAN: Hapus role: 'system' dan tambahkan instruksi sebagai user message pertama**
-    // Ini akan menjadi konteks awal yang tidak ditampilkan ke pengguna secara langsung.
     let currentSessionMessages = [
         { role: 'user', content: 'Sila jawab semua soalan dalam Bahasa Melayu sahaja. Jangan gunakan bahasa lain.' }
     ]; 
-    // Tambahan: Tambahkan respons dari AI untuk instruksi awal ini agar konteks seimbang
-    // Ini membantu AI memahami bahwa instruksi sudah "diterima"
     currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan menjawab dalam Bahasa Melayu sahaja.' });
 
 
@@ -23,23 +18,22 @@ document.addEventListener('DOMContentLoaded', () => {
         messageDiv.classList.add('message', `${sender}-message`, 'fade-in'); 
         
         const p = document.createElement('p');
-        // Membersihkan tanda bintang dari teks respons AI
         p.textContent = (sender === 'ai') ? text.replace(/\*/g, '') : text; 
         
         messageDiv.appendChild(p);
 
-        // Tambahkan tombol copy jika pesan dari AI
+        // Tambahkan tombol copy dan feedback jika pesan dari AI
         if (sender === 'ai') {
             const copyBtn = document.createElement('button');
             copyBtn.classList.add('copy-btn');
-            copyBtn.innerHTML = '<i class="far fa-copy"></i>'; // Ikon copy Font Awesome
+            copyBtn.innerHTML = '<i class="far fa-copy"></i>';
             copyBtn.title = 'Salin Pesan';
             copyBtn.addEventListener('click', () => {
                 navigator.clipboard.writeText(p.textContent)
                     .then(() => {
-                        copyBtn.innerHTML = '<i class="fas fa-check"></i>'; // Ganti ikon jadi ceklis
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
                         setTimeout(() => {
-                            copyBtn.innerHTML = '<i class="far fa-copy"></i>'; // Kembali ke ikon copy
+                            copyBtn.innerHTML = '<i class="far fa-copy"></i>';
                         }, 2000);
                     })
                     .catch(err => {
@@ -48,14 +42,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
             });
             messageDiv.appendChild(copyBtn);
+
+            // ===================================================
+            // NEW: Tambahkan butang feedback
+            // ===================================================
+            const feedbackContainer = document.createElement('div');
+            feedbackContainer.classList.add('feedback-container');
+
+            const thumbsUpBtn = document.createElement('button');
+            thumbsUpBtn.classList.add('feedback-btn');
+            thumbsUpBtn.innerHTML = '<i class="far fa-thumbs-up"></i>';
+            thumbsUpBtn.title = 'Suka respons ini';
+            thumbsUpBtn.addEventListener('click', () => {
+                console.log('Feedback positif diterima:', text);
+                alert('Terima kasih atas maklum balas anda!');
+            });
+            
+            const thumbsDownBtn = document.createElement('button');
+            thumbsDownBtn.classList.add('feedback-btn');
+            thumbsDownBtn.innerHTML = '<i class="far fa-thumbs-down"></i>';
+            thumbsDownBtn.title = 'Tidak suka respons ini';
+            thumbsDownBtn.addEventListener('click', () => {
+                console.log('Feedback negatif diterima:', text);
+                alert('Terima kasih atas maklum balas anda!');
+            });
+
+            feedbackContainer.appendChild(thumbsUpBtn);
+            feedbackContainer.appendChild(thumbsDownBtn);
+            messageDiv.appendChild(feedbackContainer);
+            // ===================================================
         }
 
         chatMessages.appendChild(messageDiv);
-        // Pastikan scroll ke bawah setelah animasi fade-in selesai
         messageDiv.addEventListener('animationend', () => {
             chatMessages.scrollTop = chatMessages.scrollHeight;
         });
-        // Scroll awal jika animasi belum selesai atau untuk user message
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
@@ -78,20 +99,17 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.addEventListener('click', async () => {
         const text = userInput.value.trim();
         if (text === '') {
-            return; // Jangan kirim pesan kosong
+            return;
         }
 
-        // Tambahkan pesan pengguna ke array sesi saat ini
         currentSessionMessages.push({ role: 'user', content: text });
+        addMessage(text, 'user');
+        userInput.value = '';
+        userInput.style.height = 'auto';
 
-        addMessage(text, 'user'); // Tampilkan pesan pengguna di UI
-        userInput.value = ''; // Kosongkan input
-        userInput.style.height = 'auto'; // Reset tinggi textarea
-
-        const loadingDots = addLoadingDots(); // Tampilkan loading dots
+        const loadingDots = addLoadingDots();
 
         try {
-            // Kirim semua pesan dalam sesi untuk konteks
             const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
                 headers: {
@@ -99,12 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Authorization': `Bearer ${API_KEY}` 
                 },
                 body: JSON.stringify({
-                    "model": "google/gemma-3-4b-it", 
+                    "model": "google/gemma-3-27b-it", 
                     "messages": currentSessionMessages
                 })
             });
 
-            // Hapus loading dots
             if (chatMessages.contains(loadingDots)) {
                 chatMessages.removeChild(loadingDots);
             }
@@ -118,16 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (data && data.choices && data.choices.length > 0 && data.choices[0].message && data.choices[0].message.content) {
                 const aiResponseContent = data.choices[0].message.content;
-                // Tambahkan respons AI ke array sesi
                 currentSessionMessages.push({ role: 'assistant', content: aiResponseContent });
-                addMessage(aiResponseContent, 'ai'); // Tampilkan respons AI di UI
+                addMessage(aiResponseContent, 'ai');
             } else {
                 addMessage('Tidak ada respons yang valid dari AI.', 'ai');
                 console.warn('Struktur respons tidak sesuai harapan:', data);
             }
 
         } catch (error) {
-            // Hapus loading dots jika ada error
             if (chatMessages.contains(loadingDots)) {
                 chatMessages.removeChild(loadingDots);
             }
@@ -136,17 +151,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Mengizinkan kirim pesan dengan Enter (Shift + Enter untuk baris baru)
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault(); // Mencegah baris baru
-            submitBtn.click(); // Memicu klik tombol
+            e.preventDefault();
+            submitBtn.click();
         }
     });
 
-    // Menyesuaikan tinggi textarea secara otomatis
     userInput.addEventListener('input', () => {
-        userInput.style.height = 'auto'; // Reset height
-        userInput.style.height = userInput.scrollHeight + 'px'; // Set to scroll height
+        userInput.style.height = 'auto';
+        userInput.style.height = userInput.scrollHeight + 'px';
     });
 });
