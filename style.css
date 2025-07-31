@@ -60,8 +60,7 @@ body {
     gap: 0.9375rem;
     line-height: 1.6;
     -webkit-overflow-scrolling: touch;
-    /* padding-bottom akan disesuaikan di media query untuk mobile */
-    padding-bottom: 1.25rem; /* Default untuk desktop */
+    padding-bottom: 1.25rem;
 }
 
 /* Scrollbar styling (Webkit) */
@@ -141,6 +140,38 @@ body {
     color: #555;
 }
 
+/* =================================================== */
+/* NEW: Style untuk kontainer dan tombol feedback */
+/* =================================================== */
+.feedback-container {
+    display: flex;
+    gap: 0.5rem;
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.625rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.ai-message:hover .feedback-container {
+    opacity: 1;
+}
+
+.feedback-btn {
+    background: none;
+    border: none;
+    color: #b0b0b0;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: color 0.2s ease;
+    padding: 0;
+}
+
+.feedback-btn:hover {
+    color: #888888;
+}
+/* =================================================== */
+
 .chat-input-area {
     display: flex;
     padding: 0.9375rem 1.5625rem;
@@ -149,7 +180,6 @@ body {
     align-items: flex-end;
     gap: 0.75rem;
     box-shadow: 0 -0.125rem 0.625rem rgba(0, 0, 0, 0.05);
-    /* Untuk desktop, ini tetap static, dan border-radius bawah akan diterapkan */
     position: static;
     bottom: auto;
     left: auto;
@@ -243,9 +273,7 @@ button#submitBtn svg {
     40% { transform: scale(1); }
 }
 
-/* ======================================================= */
 /* MEDIA QUERIES UNTUK MOBILE - Perbaikan Posisi Input Area */
-/* ======================================================= */
 @media (max-width: 768px) {
     :root {
         font-size: 14px;
@@ -265,26 +293,20 @@ button#submitBtn svg {
         border-radius: 0;
     }
     
-    /* PENTING: Untuk mobile, buat input area fixed di bagian bawah */
     .chat-input-area {
-        position: fixed; /* Jadikan fixed */
-        bottom: 0;       /* Tempel di paling bawah */
+        position: fixed;
+        bottom: 0;
         left: 0;
-        width: 100%;     /* Lebar penuh */
-        padding: 0.625rem 0.9375rem; /* Sesuaikan padding mobile */
-        border-radius: 0; /* Pastikan tidak ada radius di mobile fullscreen */
-        box-shadow: 0 -0.125rem 0.625rem rgba(0, 0, 0, 0.08); /* Tambah shadow agar terlihat menonjol */
+        width: 100%;
+        padding: 0.625rem 0.9375rem;
+        border-radius: 0;
+        box-shadow: 0 -0.125rem 0.625rem rgba(0, 0, 0, 0.08);
     }
 
-    /* PENTING: Tambah padding di bagian bawah chat messages
-       agar pesan tidak tertutup oleh input area yang fixed */
     .chat-messages {
         padding: 0.9375rem 1.25rem;
-        padding-bottom: calc(0.9375rem + 2.8125rem + 0.625rem); /* Padding input + tinggi tombol + gap */
-        /* Atau bisa juga dihitung berdasarkan tinggi .chat-input-area */
-        /* padding-bottom: 5.5rem; */ /* Ini bisa disesuaikan, sekitar 88px */
+        padding-bottom: 5.5rem;
     }
-
 
     textarea#userInput {
         min-height: 2.5rem;
