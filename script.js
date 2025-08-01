@@ -11,9 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
     ]; 
     currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan membalas dalam bahasa yang sama dengan anda. Saya juga boleh berinteraksi dalam Bahasa Melayu. Bagaimana saya boleh bantu anda?' });
     
+    // Fungsi untuk efek typewriting
+    function typeWriterEffect(element, text, speed, callback) {
+        let i = 0;
+        element.textContent = '';
+        function type() {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                setTimeout(type, speed);
+            } else if (callback) {
+                callback();
+            }
+        }
+        type();
+    }
+
     // Fungsi untuk menambahkan pesan ke antarmuka chat
     function addMessage(text, sender) {
-        // Hapus initial message sebelum menambahkan pesan baru
         const initialMessage = document.querySelector('.initial-message');
         if (initialMessage) {
             initialMessage.remove();
@@ -23,55 +39,67 @@ document.addEventListener('DOMContentLoaded', () => {
         messageDiv.classList.add('message', `${sender}-message`, 'fade-in'); 
         
         const p = document.createElement('p');
-        p.textContent = (sender === 'ai') ? text.replace(/\*/g, '') : text; 
         p.classList.add('message-content');
         
         messageDiv.appendChild(p);
 
         if (sender === 'ai') {
-            const copyBtn = document.createElement('button');
-            copyBtn.classList.add('copy-btn');
-            copyBtn.innerHTML = '<i class="far fa-copy"></i>';
-            copyBtn.title = 'Salin Pesan';
-            copyBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(p.textContent)
-                    .then(() => {
-                        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
-                        setTimeout(() => {
-                            copyBtn.innerHTML = '<i class="far fa-copy"></i>';
-                        }, 2000);
-                    })
-                    .catch(err => {
-                        console.error('Gagal menyalin teks: ', err);
-                        alert('Gagal menyalin teks. Sila salin manual.');
-                    });
-            });
-            messageDiv.appendChild(copyBtn);
-
-            const feedbackContainer = document.createElement('div');
-            feedbackContainer.classList.add('feedback-container');
-
-            const thumbsUpBtn = document.createElement('button');
-            thumbsUpBtn.classList.add('feedback-btn');
-            thumbsUpBtn.innerHTML = '<i class="far fa-thumbs-up"></i>';
-            thumbsUpBtn.title = 'Suka respons ini';
-            thumbsUpBtn.addEventListener('click', () => {
-                console.log('Feedback positif diterima:', text);
-                alert('Terima kasih atas maklum balas anda!');
-            });
+            const typingSpeed = 10; // Kecepatan ketik (milidetik per huruf). Boleh diubah.
             
-            const thumbsDownBtn = document.createElement('button');
-            thumbsDownBtn.classList.add('feedback-btn');
-            thumbsDownBtn.innerHTML = '<i class="far fa-thumbs-down"></i>';
-            thumbsDownBtn.title = 'Tidak suka respons ini';
-            thumbsDownBtn.addEventListener('click', () => {
-                console.log('Feedback negatif diterima:', text);
-                alert('Terima kasih atas maklum balas anda!');
-            });
+            // Tambahkan kelas 'typing' untuk efek kursor
+            messageDiv.classList.add('typing'); 
 
-            feedbackContainer.appendChild(thumbsUpBtn);
-            feedbackContainer.appendChild(thumbsDownBtn);
-            messageDiv.appendChild(feedbackContainer);
+            typeWriterEffect(p, text.replace(/\*/g, ''), typingSpeed, () => {
+                // Hapus kelas 'typing' apabila selesai menaip
+                messageDiv.classList.remove('typing');
+
+                // Tambahkan tombol copy dan feedback setelah typewriting selesai
+                const copyBtn = document.createElement('button');
+                copyBtn.classList.add('copy-btn');
+                copyBtn.innerHTML = '<i class="far fa-copy"></i>';
+                copyBtn.title = 'Salin Pesan';
+                copyBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(p.textContent)
+                        .then(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                            setTimeout(() => {
+                                copyBtn.innerHTML = '<i class="far fa-copy"></i>';
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Gagal menyalin teks: ', err);
+                            alert('Gagal menyalin teks. Sila salin manual.');
+                        });
+                });
+                messageDiv.appendChild(copyBtn);
+
+                const feedbackContainer = document.createElement('div');
+                feedbackContainer.classList.add('feedback-container');
+
+                const thumbsUpBtn = document.createElement('button');
+                thumbsUpBtn.classList.add('feedback-btn');
+                thumbsUpBtn.innerHTML = '<i class="far fa-thumbs-up"></i>';
+                thumbsUpBtn.title = 'Suka respons ini';
+                thumbsUpBtn.addEventListener('click', () => {
+                    console.log('Feedback positif diterima:', text);
+                    alert('Terima kasih atas maklum balas anda!');
+                });
+                
+                const thumbsDownBtn = document.createElement('button');
+                thumbsDownBtn.classList.add('feedback-btn');
+                thumbsDownBtn.innerHTML = '<i class="far fa-thumbs-down"></i>';
+                thumbsDownBtn.title = 'Tidak suka respons ini';
+                thumbsDownBtn.addEventListener('click', () => {
+                    console.log('Feedback negatif diterima:', text);
+                    alert('Terima kasih atas maklum balas anda!');
+                });
+
+                feedbackContainer.appendChild(thumbsUpBtn);
+                feedbackContainer.appendChild(thumbsDownBtn);
+                messageDiv.appendChild(feedbackContainer);
+            });
+        } else {
+            p.textContent = text;
         }
 
         chatMessages.appendChild(messageDiv);
