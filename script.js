@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Sembunyikan splash screen selepas 3 saat (lebih lama dari animasi CSS)
+    setTimeout(() => {
+        const splashScreen = document.getElementById('splashScreen');
+        splashScreen.style.display = 'none';
+
+        const chatContainer = document.querySelector('.chat-container');
+        chatContainer.style.opacity = 1;
+    }, 3000); // 3000ms = 3 saat
+
     const userInput = document.getElementById('userInput');
     const submitBtn = document.getElementById('submitBtn');
     const chatMessages = document.getElementById('chatMessages');
@@ -11,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ]; 
     currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan membalas dalam bahasa yang sama dengan anda. Saya juga boleh berinteraksi dalam Bahasa Melayu. Bagaimana saya boleh bantu anda?' });
     
-    // Fungsi untuk efek typewriting
     function typeWriterEffect(element, text, speed, callback) {
         let i = 0;
         element.textContent = '';
@@ -27,8 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         type();
     }
-
-    // Fungsi untuk menambahkan pesan ke antarmuka chat
+    
     function addMessage(text, sender) {
         const initialMessage = document.querySelector('.initial-message');
         if (initialMessage) {
@@ -44,16 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
         messageDiv.appendChild(p);
 
         if (sender === 'ai') {
-            const typingSpeed = 10; // Kecepatan ketik (milidetik per huruf). Boleh diubah.
-            
-            // Tambahkan kelas 'typing' untuk efek kursor
+            const typingSpeed = 10;
             messageDiv.classList.add('typing'); 
 
             typeWriterEffect(p, text.replace(/\*/g, ''), typingSpeed, () => {
-                // Hapus kelas 'typing' apabila selesai menaip
                 messageDiv.classList.remove('typing');
 
-                // Tambahkan tombol copy dan feedback setelah typewriting selesai
                 const copyBtn = document.createElement('button');
                 copyBtn.classList.add('copy-btn');
                 copyBtn.innerHTML = '<i class="far fa-copy"></i>';
@@ -105,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-
+    
     // Fungsi untuk menambahkan loading dots
     function addLoadingDots() {
         const loadingDiv = document.createElement('div');
