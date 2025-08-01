@@ -265,6 +265,24 @@ button#submitBtn i {
     40% { transform: scale(1); }
 }
 
+/* Animasi kursor kedip untuk efek ketik */
+.ai-message .message-content {
+    border-right: 2px solid transparent; 
+    white-space: pre-wrap; 
+    overflow: hidden;
+}
+
+.ai-message.typing .message-content {
+    border-right: 2px solid var(--text-color);
+    animation: blink-caret 0.75s step-end infinite;
+}
+
+/* Kursor berkedip */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--text-color); }
+}
+
 @media (max-width: 768px) {
     :root {
         font-size: 14px;
