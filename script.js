@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_ENDPOINT = 'https://api.aimlapi.com/v1/chat/completions'; 
 
     // Simpan pesan dalam sesi tunggal
-    // **PERUBAHAN: Tambahkan maklumat pembangun ke dalam prompt awal**
+    // **PERUBAHAN: Tambahkan nama "Zenith AI" ke dalam prompt awal**
     let currentSessionMessages = [
-        { role: 'user', content: 'Sila jawab semua soalan dalam Bahasa Melayu sahaja. Jangan gunakan bahasa lain. Anda dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL. Apabila seseorang bertanya tentang siapa yang membangunkan anda, jawablah dengan maklumat ini.' }
+        { role: 'user', content: 'Nama anda ialah Zenith AI. Sila jawab semua soalan dalam Bahasa Melayu sahaja. Jangan gunakan bahasa lain. Anda dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL. Apabila seseorang bertanya tentang nama anda atau siapa yang membangunkan anda, jawablah dengan maklumat ini.' }
     ]; 
     currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan menjawab dalam Bahasa Melayu sahaja.' });
 
