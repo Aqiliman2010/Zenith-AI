@@ -5,28 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zenith AI</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/css/all.min.css">
 </head>
 <body>
+    <div id="splashScreen">
+        <h1 class="splash-text">Zenith AI</h1>
+        <div class="splash-spinner"></div>
+    </div>
+    
     <div class="chat-container">
         <header class="chat-header">
-            <h1 class="header-title">Zenith AI</h1>
-            <p class="header-subtitle">Dev : Aqil Iman</p>
+            <h1>Zenith AI</h1>
         </header>
         <div class="chat-messages" id="chatMessages">
-            <div class="initial-message">
-                <h2>Hai Saya Zenith AI.</h2>
-                <p>Macam mana saaya boleh tolong awak hari ni?</p>
             </div>
-        </div>
         <div class="chat-input-area">
-            <textarea id="userInput" placeholder="Tanya Zenith"></textarea>
-            <button id="submitBtn" title="Hantar Mesej">
-                <i class="fas fa-paper-plane"></i>
+            <textarea id="userInput" placeholder="Ask Zenith | Dev: Unknown School at SMASZAL"></textarea>
+            <button id="submitBtn" title="Kirim Pesan">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
             </button>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
