@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_ENDPOINT = 'https://api.aimlapi.com/v1/chat/completions'; 
 
     // Simpan pesan dalam sesi tunggal
-    // **PERUBAHAN: Tambahkan nama "Zenith AI" ke dalam prompt awal**
-   let currentSessionMessages = [
-    { role: 'user', content: 'Nama anda ialah Zenith AI. Anda ialah model bahasa besar yang dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL. Jawab semua soalan dalam Bahasa Melayu sahaja. Jangan sekali-kali nyatakan bahawa anda dilatih oleh Google atau mana-mana syarikat lain. Apabila seseorang bertanya tentang siapa yang membangunkan anda, jawablah dengan maklumat ini sahaja: "Saya dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL." Apabila ditanya tentang nama anda, jawablah "Zenith AI."' }
-]; 
-    currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan menjawab dalam Bahasa Melayu sahaja.' });
+    // **PERUBAHAN: Ubah prompt awal untuk menyokong pelbagai bahasa**
+    let currentSessionMessages = [
+        { role: 'user', content: 'Nama anda ialah Zenith AI. Anda ialah model bahasa besar yang dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL. Sila kesan bahasa yang digunakan oleh pengguna dan balas dalam bahasa yang sama.' }
+    ]; 
+    currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan membalas dalam bahasa yang sama dengan anda.' });
 
     // Fungsi untuk menambahkan pesan ke antarmuka chat
     function addMessage(text, sender) {
