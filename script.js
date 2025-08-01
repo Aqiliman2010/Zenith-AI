@@ -6,24 +6,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_KEY = '9e505e555ed44612a7cc12097403c75d'; 
     const API_ENDPOINT = 'https://api.aimlapi.com/v1/chat/completions'; 
 
-    // Simpan pesan dalam sesi tunggal
-    // **PERUBAHAN: Ubah prompt awal untuk menyokong pelbagai bahasa**
     let currentSessionMessages = [
-        { role: 'user', content: 'Nama anda ialah Zenith AI. Anda ialah model bahasa besar yang dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL. Sila kesan bahasa yang digunakan oleh pengguna dan balas dalam bahasa yang sama.' }
+        { role: 'user', content: 'Nama anda ialah Zenith AI. Anda ialah model bahasa besar yang dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL. Sila kesan bahasa yang digunakan oleh pengguna dan balas dalam bahasa yang sama. Jangan sekali-kali nyatakan bahawa anda dilatih oleh Google atau mana-mana syarikat lain.' }
     ]; 
-    currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan membalas dalam bahasa yang sama dengan anda.' });
-
+    currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan membalas dalam bahasa yang sama dengan anda. Saya juga boleh berinteraksi dalam Bahasa Melayu. Bagaimana saya boleh bantu anda?' });
+    
     // Fungsi untuk menambahkan pesan ke antarmuka chat
     function addMessage(text, sender) {
+        // Hapus initial message sebelum menambahkan pesan baru
+        const initialMessage = document.querySelector('.initial-message');
+        if (initialMessage) {
+            initialMessage.remove();
+        }
+
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', `${sender}-message`, 'fade-in'); 
         
         const p = document.createElement('p');
         p.textContent = (sender === 'ai') ? text.replace(/\*/g, '') : text; 
+        p.classList.add('message-content');
         
         messageDiv.appendChild(p);
 
-        // Tambahkan tombol copy dan feedback jika pesan dari AI
         if (sender === 'ai') {
             const copyBtn = document.createElement('button');
             copyBtn.classList.add('copy-btn');
@@ -71,9 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         chatMessages.appendChild(messageDiv);
-        messageDiv.addEventListener('animationend', () => {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
@@ -135,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentSessionMessages.push({ role: 'assistant', content: aiResponseContent });
                 addMessage(aiResponseContent, 'ai');
             } else {
-                addMessage('Tidak ada respons yang valid dari AI.', 'ai');
+                addMessage('Tidak ada respons yang valid dari AI. Sila cuba lagi.', 'ai');
                 console.warn('Struktur respons tidak sesuai harapan:', data);
             }
 
@@ -144,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 chatMessages.removeChild(loadingDots);
             }
             console.error('Ada masalah saat mengambil data dari AIML API:', error);
-            addMessage(`Error: ${error.message}. Cek konsol browser untuk detail lebih lanjut.`, 'ai');
+            addMessage(`Maaf, ada masalah teknikal. Sila cuba lagi nanti.`, 'ai');
         }
     });
 
