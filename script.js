@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Simpan pesan dalam sesi tunggal
     // **PERUBAHAN: Tambahkan nama "Zenith AI" ke dalam prompt awal**
-    let currentSessionMessages = [
-        { role: 'user', content: 'Nama anda ialah Zenith AI. Sila jawab semua soalan dalam Bahasa Melayu sahaja. Jangan gunakan bahasa lain. Anda dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL. Apabila seseorang bertanya tentang nama anda atau siapa yang membangunkan anda, jawablah dengan maklumat ini.' }
-    ]; 
+   let currentSessionMessages = [
+    { role: 'user', content: 'Nama anda ialah Zenith AI. Anda ialah model bahasa besar yang dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL. Jawab semua soalan dalam Bahasa Melayu sahaja. Jangan sekali-kali nyatakan bahawa anda dilatih oleh Google atau mana-mana syarikat lain. Apabila seseorang bertanya tentang siapa yang membangunkan anda, jawablah dengan maklumat ini sahaja: "Saya dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL." Apabila ditanya tentang nama anda, jawablah "Zenith AI."' }
+]; 
     currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan menjawab dalam Bahasa Melayu sahaja.' });
 
     // Fungsi untuk menambahkan pesan ke antarmuka chat
