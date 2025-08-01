@@ -1,12 +1,16 @@
+/* style.css (Updated) */
+
+/* Definisi variabel CSS untuk palet warna dan styling */
 :root {
     font-size: 16px;
-    --primary-color: #5d67e7;
-    --secondary-color: #895be7;
-    --background-color: #f0f4f8;
+    --primary-color: #4a90e2; /* Warna primer yang lebih lembut */
+    --secondary-color: #6a85e6; /* Warna sekunder yang selaras */
+    --background-color: #f7f9fc; /* Latar belakang yang lebih terang */
     --card-background: #ffffff;
-    --text-color: #333333;
-    --secondary-text: #666666;
-    --shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
+    --text-color: #1e2025; /* Warna teks yang lebih gelap untuk kontras */
+    --secondary-text: #6c757d;
+    --border-color: #e0e6ed;
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.06);
     --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1);
     --border-radius: 12px;
 }
@@ -22,6 +26,7 @@ body {
     color: var(--text-color);
 }
 
+/* Splash Screen (Tidak ada perubahan signifikan) */
 #splashScreen {
     position: fixed;
     top: 0;
@@ -84,7 +89,7 @@ body {
     flex-direction: column;
     overflow: hidden;
     position: relative;
-    opacity: 0; /* Sembunyikan secara lalai */
+    opacity: 0;
     transition: opacity 0.5s ease-in;
 }
 
@@ -94,6 +99,7 @@ body {
     padding: 1.5rem 2rem;
     text-align: left;
     flex-shrink: 0;
+    box-shadow: var(--shadow-light); /* Menambahkan bayangan untuk efek elevasi */
 }
 
 .header-title {
@@ -106,7 +112,7 @@ body {
     margin: 0.25rem 0 0;
     font-size: 0.9em;
     font-weight: 400;
-    opacity: 0.8;
+    opacity: 0.9; /* Mengurangi opasitas agar lebih halus */
 }
 
 .chat-messages {
@@ -130,11 +136,11 @@ body {
     background: transparent;
 }
 .chat-messages::-webkit-scrollbar-thumb {
-    background: #ccc;
+    background: #c0c0c0; /* Warna thumb scrollbar yang lebih netral */
     border-radius: 10px;
 }
 .chat-messages::-webkit-scrollbar-thumb:hover {
-    background: #a0a0a0;
+    background: #9a9a9a;
 }
 
 .initial-message {
@@ -185,7 +191,7 @@ body {
     background-color: var(--card-background);
     color: var(--text-color);
     align-self: flex-start;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color); /* Menggunakan variabel border-color */
     border-bottom-left-radius: 4px;
 }
 
@@ -233,7 +239,7 @@ body {
     display: flex;
     padding: 1.5rem 2rem;
     background-color: var(--card-background);
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--border-color);
     align-items: flex-end;
     gap: 1rem;
 }
@@ -241,21 +247,21 @@ body {
 textarea#userInput {
     flex-grow: 1;
     padding: 1rem 1.2rem;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
     border-radius: 2rem;
     font-size: 1em;
     resize: none;
     min-height: 3rem;
     max-height: 10rem;
     overflow-y: auto;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 textarea#userInput:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.08), 0 0 0 3px rgba(93, 103, 231, 0.2);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05), 0 0 0 3px rgba(74, 144, 226, 0.2);
 }
 
 button#submitBtn {
