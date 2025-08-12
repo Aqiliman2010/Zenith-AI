@@ -1,25 +1,66 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Sembunyikan splash screen selepas 3 saat (lebih lama dari animasi CSS)
-    setTimeout(() => {
-        const splashScreen = document.getElementById('splashScreen');
-        splashScreen.style.display = 'none';
-
-        const chatContainer = document.querySelector('.chat-container');
-        chatContainer.style.opacity = 1;
-    }, 3000); // 3000ms = 3 saat
-
+    const splashScreen = document.getElementById('splashScreen');
+    const chatContainer = document.querySelector('.chat-container');
     const userInput = document.getElementById('userInput');
     const submitBtn = document.getElementById('submitBtn');
     const chatMessages = document.getElementById('chatMessages');
 
-    const API_KEY = '9e505e555ed44612a7cc12097403c75d'; 
-    const API_ENDPOINT = 'https://api.aimlapi.com/v1/chat/completions'; 
+    const API_KEY = '635afbbf01a64f2897e958187c411036';
+    const API_ENDPOINT = 'https://api.aimlapi.com/v1/chat/completions';
 
-    let currentSessionMessages = [
-        { role: 'user', content: 'Nama anda ialah Zenith AI. Anda ialah model bahasa besar yang dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL. Sila kesan bahasa yang digunakan oleh pengguna dan balas dalam bahasa yang sama. Jangan sekali-kali nyatakan bahawa anda dilatih oleh Google atau mana-mana syarikat lain.' }
-    ]; 
-    currentSessionMessages.push({ role: 'assistant', content: 'Baik, saya faham. Saya akan membalas dalam bahasa yang sama dengan anda. Saya juga boleh berinteraksi dalam Bahasa Melayu. Bagaimana saya boleh bantu anda?' });
+    const SESSION_STORAGE_KEY = 'zenithChatHistory';
+
+    let currentSessionMessages = loadSession();
+
+    setTimeout(() => {
+        splashScreen.style.display = 'none';
+        chatContainer.style.opacity = 1;
+        
+        // Paparkan semula mesej dari sesi yang disimpan, jika ada
+        if (currentSessionMessages.length > 2) { 
+            // Paparkan mesej dari sesi yang disimpan
+            for (let i = 2; i < currentSessionMessages.length; i++) {
+                const message = currentSessionMessages[i];
+                addMessageToDOM(message.content, message.role);
+            }
+        }
+    }, 3000);
+
+    function loadSession() {
+        const storedSession = localStorage.getItem(SESSION_STORAGE_KEY);
+        if (storedSession) {
+            return JSON.parse(storedSession);
+        }
+        // Riwayat sesi awal yang sudah termasuk instruksi
+        return [
+            {
+                role: 'user',
+                content: 'Nama anda ialah Zenith AI. Anda ialah model bahasa besar yang dibangunkan oleh Aqil Iman, seorang pelajar di SMASZAL. Sila kesan bahasa yang digunakan oleh pengguna dan balas dalam bahasa yang sama. Jangan sekali-kali nyatakan bahawa anda dilatih oleh Google atau mana-mana syarikat lain.',
+            },
+            {
+                role: 'assistant',
+                content: 'Baik, saya faham. Saya akan membalas dalam bahasa yang sama dengan anda. Saya juga boleh berinteraksi dalam Bahasa Melayu. Bagaimana saya boleh bantu anda?',
+            },
+        ];
+    }
+
+    function saveSession() {
+        localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(currentSessionMessages));
+    }
     
+    // Fungsi clearSession telah dibuang
+
+    // Kod untuk butang Clear Chat telah dibuang
+
+    function addLoadingDots() {
+        const loadingDots = document.createElement('div');
+        loadingDots.classList.add('loading-dots');
+        loadingDots.innerHTML = '<span></span><span></span><span></span>';
+        chatMessages.appendChild(loadingDots);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return loadingDots;
+    }
+
     function typeWriterEffect(element, text, speed, callback) {
         let i = 0;
         element.textContent = '';
@@ -35,28 +76,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         type();
     }
-    
-    function addMessage(text, sender) {
-        const initialMessage = document.querySelector('.initial-message');
-        if (initialMessage) {
-            initialMessage.remove();
-        }
 
+    function addMessageToDOM(text, sender) {
         const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', `${sender}-message`, 'fade-in'); 
-        
+        messageDiv.classList.add('message', `${sender}-message`, 'fade-in');
+
         const p = document.createElement('p');
         p.classList.add('message-content');
-        
         messageDiv.appendChild(p);
 
-        if (sender === 'ai') {
-            const typingSpeed = 10;
-            messageDiv.classList.add('typing'); 
+        chatMessages.appendChild(messageDiv);
+
+        if (sender === 'assistant') {
+            const textLength = text.length;
+            let typingSpeed;
+
+            if (textLength > 500) {
+                typingSpeed = 5;
+            } else if (textLength > 200) {
+                typingSpeed = 10;
+            } else if (textLength > 50) {
+                typingSpeed = 25;
+            } else {
+                typingSpeed = 50;
+            }
+            
+            messageDiv.classList.add('typing');
 
             typeWriterEffect(p, text.replace(/\*/g, ''), typingSpeed, () => {
                 messageDiv.classList.remove('typing');
-
+                
                 const copyBtn = document.createElement('button');
                 copyBtn.classList.add('copy-btn');
                 copyBtn.innerHTML = '<i class="far fa-copy"></i>';
@@ -87,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Feedback positif diterima:', text);
                     alert('Terima kasih atas maklum balas anda!');
                 });
-                
+
                 const thumbsDownBtn = document.createElement('button');
                 thumbsDownBtn.classList.add('feedback-btn');
                 thumbsDownBtn.innerHTML = '<i class="far fa-thumbs-down"></i>';
@@ -104,35 +153,19 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             p.textContent = text;
         }
-
-        chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-    
-    // Fungsi untuk menambahkan loading dots
-    function addLoadingDots() {
-        const loadingDiv = document.createElement('div');
-        loadingDiv.classList.add('loading-dots');
-        loadingDiv.id = 'loadingDots';
-        loadingDiv.innerHTML = `
-            <span></span>
-            <span></span>
-            <span></span>
-        `;
-        chatMessages.appendChild(loadingDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        return loadingDiv;
-    }
 
-    // Event listener untuk tombol kirim
     submitBtn.addEventListener('click', async () => {
-        const text = userInput.value.trim();
-        if (text === '') {
+        const userMessage = userInput.value.trim();
+        if (userMessage === '') {
             return;
         }
-
-        currentSessionMessages.push({ role: 'user', content: text });
-        addMessage(text, 'user');
+        addMessageToDOM(userMessage, 'user');
+        
+        currentSessionMessages.push({ role: 'user', content: userMessage });
+        saveSession();
+        
         userInput.value = '';
         userInput.style.height = 'auto';
 
@@ -143,31 +176,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${API_KEY}` 
+                    'Authorization': `Bearer ${API_KEY}`
                 },
                 body: JSON.stringify({
-                    "model": "google/gemma-3-4b-it", 
-                    "messages": currentSessionMessages
+                    model: 'google/gemma-3-4b-it',
+                    messages: currentSessionMessages,
+                    max_tokens: 1000,
+                    temperature: 0.7,
                 })
             });
 
-            if (chatMessages.contains(loadingDots)) {
-                chatMessages.removeChild(loadingDots);
-            }
-
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.detail || errorData.message || 'Unknown error'}`);
+                if (chatMessages.contains(loadingDots)) {
+                    chatMessages.removeChild(loadingDots);
+                }
+                
+                let errorDetails = '';
+                try {
+                    const errorData = await response.json();
+                    errorDetails = errorData.detail || errorData.message || JSON.stringify(errorData);
+                } catch (e) {
+                    errorDetails = `Gagal memproses respons error dari API: ${e.message}`;
+                }
+
+                if (response.status === 401) {
+                    addMessageToDOM(`Maaf, ada masalah dengan API key. Sila pastikan kunci anda betul dan belum luput.`, 'assistant');
+                } else if (response.status === 404) {
+                    addMessageToDOM(`Maaf, model AI tidak dijumpai. Sila periksa semula nama model di dalam kod.`, 'assistant');
+                } else if (response.status === 400) {
+                    addMessageToDOM(`Maaf, ada masalah dengan permintaan anda (Bad Request). Detail: ${errorDetails}. Sila cuba lagi dengan soalan yang lain.`, 'assistant');
+                } else {
+                    addMessageToDOM(`Maaf, ada masalah teknikal. Sila cuba lagi nanti. (Status: ${response.status}, Detail: ${errorDetails})`, 'assistant');
+                }
+                
+                console.error(`API Error - Status: ${response.status}`, errorDetails);
+                return;
             }
 
             const data = await response.json();
-            
+
             if (data && data.choices && data.choices.length > 0 && data.choices[0].message && data.choices[0].message.content) {
                 const aiResponseContent = data.choices[0].message.content;
+
                 currentSessionMessages.push({ role: 'assistant', content: aiResponseContent });
-                addMessage(aiResponseContent, 'ai');
+                saveSession();
+                
+                if (chatMessages.contains(loadingDots)) {
+                    chatMessages.removeChild(loadingDots);
+                }
+                
+                addMessageToDOM(aiResponseContent, 'assistant');
             } else {
-                addMessage('Tidak ada respons yang valid dari AI. Sila cuba lagi.', 'ai');
+                if (chatMessages.contains(loadingDots)) {
+                    chatMessages.removeChild(loadingDots);
+                }
+                addMessageToDOM('Tidak ada respons yang valid dari AI. Sila cuba lagi.', 'assistant');
                 console.warn('Struktur respons tidak sesuai harapan:', data);
             }
 
@@ -176,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 chatMessages.removeChild(loadingDots);
             }
             console.error('Ada masalah saat mengambil data dari AIML API:', error);
-            addMessage(`Maaf, ada masalah teknikal. Sila cuba lagi nanti.`, 'ai');
+            addMessageToDOM(`Maaf, ada masalah teknikal. Sila cuba lagi nanti.`, 'assistant');
         }
     });
 
